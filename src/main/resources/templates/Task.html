@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		
+		<title>Task Management</title>
+		<style>
+			body {
+			  background-image: url('https://media.istockphoto.com/id/1059615932/photo/stationery-on-green-background.jpg?s=170667a&w=0&k=20&c=NBbz_Me6WXPdWpnxINgasYYREd9VldKMLqBb839r-Ds=');
+			  background-repeat: no-repeat;
+			  background-attachment: fixed;
+			  background-size: cover;
+			}
+			th {
+            width: 80%; /* Adjust this percentage to make the Task column wider */
+        }
+			</style>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+		 integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
+		 crossorigin="anonymous">
+		
+	</head>
+	
+	<body>
+		
+		<!--navbar started-->
+		
+		
+<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+  <!-- Brand -->
+  <a class="navbar-brand" href="#">Task Management</a>
+
+  <!-- Toggler/collapsibe Button -->
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <!-- Navbar links -->
+  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/tasks}">Updated Task</a>
+      </li>
+      
+    </ul>
+  </div>
+</nav>
+		<!--navbar-->
+		
+		<div class="container">
+			<div class="row">
+				<h1 style="padding-left: 15px;">List of Todays Topice</h1>
+			</div>
+			
+			<div>
+				
+			</div>
+			
+			
+			<!--Add students-->
+			<div class="row">
+				<div class="col-lg-3">
+					<a th:href="@{/tasks/new}" class="btn btn-primary btn-sm mb-3">Add Task</a>					
+				</div>
+				
+			</div>
+			
+			<!--Popup message-->
+			
+<!--Now print if successMessage is true-->			
+<div style="margin-right: 920px;" id="success-message" th:if="${session.successMessage}" class="alert alert-success" role="alert">
+    <p th:text="${session.successMessage}"></p>
+</div>
+
+
+<!-- to check if session.successMessage are true or not -->
+<div id="success-message">
+		
+	<div th:if="${session.successMessage}">
+    	<input type="hidden" id="showPopup" th:value="true" />
+	</div>
+
+</div>
+
+			<!--Popup message-->
+
+		
+			<table class="table table-striped table-bordered">
+				
+				<thead class="table-dark">
+					
+					<tr>
+						<th>Task</th>
+						
+						<th>Mark</th>
+						
+					</tr>
+					
+				</thead>
+				
+				
+				<tbody>
+					<tr th:each = "task: ${tasks}">
+						<!--it works as each/for loop we will get data from list of students from controller-->
+						<td th:text="${task.firstTask}"></td>
+						
+						<td>
+							
+							<!--Update button-->
+							<a th:href="@{/tasks/edit/{id}(id=${task.id})}" 
+							class="btn btn-primary" style="background-color: orange;">Update
+							</a>	
+							<!--delete -->
+							<a th:href="@{/tasks/{id}(id=${task.id})}" 
+							class="btn btn-danger" style="background-color: rgb(63, 172, 240);">Done
+							</a>		
+							
+						</td>
+							
+					</tr>
+					
+				</tbody>
+				
+				
+				
+			</table>
+			
+			<!--<script src="@{/js/script.js}"> </script>-->
+			
+		</div>
+		
+	<!--<script>
+    	document.addEventListener("DOMContentLoaded", function() {
+        	// Function to hide the success message after 5 seconds
+        	function hideSuccessMessage() {
+            	var successMessageElement = document.getElementById('success-message');
+            	if (successMessageElement) {
+                	successMessageElement.style.display = 'none';
+            	}
+        	}
+
+        	// Call the hideSuccessMessage function after 5 seconds (5000 milliseconds)
+        	setTimeout(hideSuccessMessage, 2000);
+    	});
+	</script>-->
+	
+	
+	
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Function to hide the success message after 5 seconds
+        function hideSuccessMessage() {
+            var successMessageElement = document.getElementById('success-message');
+            if (successMessageElement) {
+                successMessageElement.style.display = 'none';
+                // Reset the successMessage in the session
+                fetch('/resetSuccessMessage', {
+                    method: 'POST'
+                });
+            }
+        }
+
+        // Call the hideSuccessMessage function after 5 seconds (5000 milliseconds)
+        setTimeout(hideSuccessMessage, 2000);
+
+        // Check if the showPopup flag is true and display the popup accordingly
+        var showPopup = document.getElementById('showPopup').value;
+        if (showPopup === "true") {
+            var successMessageElement = document.getElementById('success-message');
+            successMessageElement.style.display = 'block';
+        }
+    });
+</script>
+
+
+		
+	</body>
+	
+</html>
